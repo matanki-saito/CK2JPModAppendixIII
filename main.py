@@ -14,6 +14,8 @@ from pathlib import Path
 
 from boto3.session import Session
 
+from special_escape import generate_encoder, generate_printer
+
 _ = join
 
 
@@ -27,7 +29,10 @@ def build_yml_from_raw_json(in_dir_path,
     :param ignore_keys_pattern: 除外キー
     :return:
     """
-    
+
+    encoder = generate_encoder("ck2", "csv")
+    printer = generate_printer("ck2", "csv")
+
     for f in Path(in_dir_path).glob("*.json"):
         result = ["#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x"]
 
@@ -45,8 +50,8 @@ def build_yml_from_raw_json(in_dir_path,
 
         # ファイルに保存
         root, ext = os.path.splitext(f.name)
-        with open(_(out_dir_path, root), "wt", encoding="utf_8_sig") as fw:  # sigはBOM付き
-            fw.write("\n".join(result))
+        encode = encoder(src_array=map(ord, "\n".join(result)))
+        printer(src_array=encode, out_file_path=_(out_dir_path, root))
 
 
 def download_trans_zip_from_paratranz(project_id,
@@ -228,12 +233,10 @@ def main():
     os.makedirs(_(".", "out"), exist_ok=True)
 
     # 翻訳の最新版をダウンロードする
-    # p_file_path = download_trans_zip_from_paratranz(
-    #     project_id=91,
-    #     secret=os.environ.get("PARATRANZ_SECRET"),
-    #     out_file_path=_(".", "tmp", "paratranz.zip"))
-
-    p_file_path = _(".", "tmp", "paratranz.zip")
+    p_file_path = download_trans_zip_from_paratranz(
+        project_id=91,
+        secret=os.environ.get("PARATRANZ_SECRET"),
+        out_file_path=_(".", "tmp", "paratranz.zip"))
 
     print("p_file_path:{}".format(p_file_path))
 
@@ -250,14 +253,12 @@ def main():
         out_file_path=_(".", "out", "ck2_ap3_mod"),
         mod_file_name="jpmod_ap3_mod",
         mod_zip_path=app_mod_zip_file_path,
-        mod_title_name="JPMOD Sub 1: Character Names",
+        mod_title_name="JPMOD Sub 2: English Map Names",
         mod_tags={"Translation", "Localisation"},
         mod_image_file_path="title.jpg",
         mod_user_dir_name="JLM")
 
     print("mod_pack_file_path:{}".format(mod_pack_file_path))
-
-    return
 
     # S3にアップロード from datetime import datetime as dt
     from datetime import datetime as dt

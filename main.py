@@ -99,7 +99,7 @@ def assembly_app_mod_zip_file(resource_image_file_path,
         os.makedirs(out_dir_path, exist_ok=True)
         build_yml_from_raw_json(in_dir_path=temp_json_dir,
                                 out_dir_path=out_dir_path,
-                                ignore_keys_pattern=re.compile(r"(PROV[0-9]+)|(c_.+)|(e_.+)|(k_.+)|(d_,+)|(b_.+)"))
+                                ignore_keys_pattern=re.compile(r"(PROV[0-9]+)|(c_.+)|(e_.+)|(k_.+)|(d_.+)|(b_.+)"))
 
         # zip化する
         return shutil.make_archive(out_file_path, 'zip', root_dir=_(temp_dir_path, "out"))

@@ -46,7 +46,7 @@ def build_yml_from_raw_json(in_dir_path,
                 if ignore_keys_pattern.match(key):
                     result.append('{};{};;;;;;;;;;;;;x"'.format(key, original))
                 else:
-                    result.append('{}:{};;;;;;;;;;;;;x'.format(key, translation))
+                    result.append('{};{};;;;;;;;;;;;;x'.format(key, translation))
 
         # ファイルに保存
         root, ext = os.path.splitext(f.name)
@@ -121,6 +121,7 @@ def salvage_files_from_paratranz_trans_zip(out_dir_path,
 def generate_dot_mod_file(mod_title_name,
                           mod_file_name,
                           mod_tags,
+                          mod_dependencies,
                           mod_image_file_path,
                           out_dir_path,
                           mod_user_dir_name=None):
@@ -130,6 +131,7 @@ def generate_dot_mod_file(mod_title_name,
     :param mod_file_name: zipファイルの名前（.zipを含まない）
     :param mod_user_dir_name:ユーザ作業ディレクトリ名
     :param mod_tags: Set<String>型
+    :param mod_dependencies: Set<String>型 依存先MOD
     :param mod_image_file_path:
     :param out_dir_path: 出力ディレクトリのパス
     :return: 出力ファイルパス
@@ -148,7 +150,8 @@ def generate_dot_mod_file(mod_title_name,
             'archive="mod/{}.zip"'.format(mod_file_name),
             'user_dir="{}"'.format(mod_user_dir_name),
             'tags={}'.format("{" + " ".join(map(lambda c: '"{}"'.format(c), mod_tags)) + "}"),
-            'picture="{}"'.format(mod_image_file_path)
+            'picture="{}"'.format(mod_image_file_path),
+            'dependencies={}'.format("{" + " ".join(map(lambda c: '"{}"'.format(c), mod_dependencies)) + "}"),
         ]
 
         fw.write("\n".join(lines))
@@ -209,6 +212,7 @@ def pack_mod(out_file_path,
              mod_title_name,
              mod_file_name,
              mod_tags,
+             mod_dependencies,
              mod_image_file_path,
              mod_user_dir_name=None):
     with tempfile.TemporaryDirectory() as temp_dir_path:
@@ -217,6 +221,7 @@ def pack_mod(out_file_path,
             mod_title_name=mod_title_name,
             mod_file_name=mod_file_name,
             mod_tags=mod_tags,
+            mod_dependencies=mod_dependencies,
             mod_user_dir_name=mod_user_dir_name,
             mod_image_file_path=mod_image_file_path,
             out_dir_path=temp_dir_path)
@@ -255,6 +260,7 @@ def main():
         mod_zip_path=app_mod_zip_file_path,
         mod_title_name="JPMOD Sub 2: English Map Names",
         mod_tags={"Translation", "Localisation"},
+        mod_dependencies=["JPMOD Main 2: Text"],
         mod_image_file_path="title.jpg",
         mod_user_dir_name="JLM")
 

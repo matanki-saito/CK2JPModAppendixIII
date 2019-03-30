@@ -43,7 +43,7 @@ def build_yml_from_raw_json(in_dir_path,
                 original = item['original']
                 translation = item['translation']
 
-                if ignore_keys_pattern.match(key):
+                if ignore_keys_pattern.match(key) or translation == "":
                     result.append('{};{};;;;;;;;;;;;;x"'.format(key, original))
                 else:
                     result.append('{};{};;;;;;;;;;;;;x'.format(key, translation))

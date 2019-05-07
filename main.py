@@ -44,9 +44,9 @@ def build_yml_from_raw_json(in_dir_path,
                 translation = item['translation']
 
                 if ignore_keys_pattern.match(key) or translation == "":
-                    result.append('{};{};;;;;;;;;;;;;x"'.format(key, original))
+                    result.append('{};{};;;;;;;;;;;;x'.format(key, original))
                 else:
-                    result.append('{};{};;;;;;;;;;;;;x'.format(key, translation))
+                    result.append('{};{};;;;;;;;;;;;x'.format(key, translation))
 
         # ファイルに保存
         root, ext = os.path.splitext(f.name)

@@ -294,8 +294,6 @@ def main():
 
     print("mod_pack_file_path:{}".format(mod_pack_file_path))
 
-    return
-
     # S3にアップロード from datetime import datetime as dt
     from datetime import datetime as dt
     cdn_url = upload_mod_to_s3(

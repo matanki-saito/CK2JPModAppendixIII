@@ -18,15 +18,42 @@ from special_escape import generate_encoder, generate_printer
 
 _ = join
 
+ignore_key_pattern = r"(PROV[0-9]+)|(c_.+)|(e_.+)|(k_.+)|(d_.+)|(b_.+)|(^[a-z]+_china$)"
+ignore_key_list = [
+    "ZHANGZHUNG",
+    "GUGE",
+    "PHAGMODRUPA",
+    "AUSTRASIA",
+    "WEST_FRANCIA",
+    "EAST_FRANCIA",
+    "LOTHARINGIA",
+    "LOMBARD_KINGDOM",
+    "AVAR_KHAGANATE",
+    "KINGDOM_PANNONIA",
+    "ALEMANNIA",
+    "MARCH_FRIULI",
+    "DUCHY_IVREA",
+    "KIEVAN_RUS",
+    "FUSTAT",
+    "BERNICIA",
+    "RHOS",
+    "SEISYLLWG",
+    "GLYWYSING",
+    "MORGANNWG",
+    "LOCHA_LEIN"
+]
+
 
 def build_yml_from_raw_json(in_dir_path,
                             out_dir_path,
-                            ignore_keys_pattern):
+                            ignore_keys_pattern,
+                            ignore_keys_list):
     """
     raw jsonからymlを組み立てる
     :param in_dir_path: 入力パス
     :param out_dir_path: 出力パス
-    :param ignore_keys_pattern: 除外キー
+    :param ignore_keys_pattern: 除外キーパターン
+    :param ignore_keys_list 強制除外キーリスト
     :return:
     """
 
@@ -43,7 +70,7 @@ def build_yml_from_raw_json(in_dir_path,
                 original = item['original']
                 translation = item['translation']
 
-                if ignore_keys_pattern.match(key) or translation == "":
+                if key in ignore_keys_list or ignore_keys_pattern.match(key) or translation == "":
                     result.append('{};{};;;;;;;;;;;;x'.format(key, original))
                 else:
                     result.append('{};{};;;;;;;;;;;;x'.format(key, translation))
@@ -99,7 +126,8 @@ def assembly_app_mod_zip_file(resource_image_file_path,
         os.makedirs(out_dir_path, exist_ok=True)
         build_yml_from_raw_json(in_dir_path=temp_json_dir,
                                 out_dir_path=out_dir_path,
-                                ignore_keys_pattern=re.compile(r"(PROV[0-9]+)|(c_.+)|(e_.+)|(k_.+)|(d_.+)|(b_.+)"))
+                                ignore_keys_pattern=re.compile(ignore_key_pattern),
+                                ignore_keys_list=ignore_key_list)
 
         # zip化する
         return shutil.make_archive(out_file_path, 'zip', root_dir=_(temp_dir_path, "out"))
@@ -107,7 +135,7 @@ def assembly_app_mod_zip_file(resource_image_file_path,
 
 def salvage_files_from_paratranz_trans_zip(out_dir_path,
                                            paratranz_zip_path,
-                                           folder_list=[]):
+                                           folder_list):
     with zipfile.ZipFile(paratranz_zip_path) as paratranz_zip:
         raw_files = filter(lambda name: name.startswith("raw/"), paratranz_zip.namelist())
 
@@ -265,6 +293,8 @@ def main():
         mod_user_dir_name="JLM")
 
     print("mod_pack_file_path:{}".format(mod_pack_file_path))
+
+    return
 
     # S3にアップロード from datetime import datetime as dt
     from datetime import datetime as dt

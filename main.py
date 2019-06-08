@@ -40,7 +40,8 @@ ignore_key_list = [
     "SEISYLLWG",
     "GLYWYSING",
     "MORGANNWG",
-    "LOCHA_LEIN"
+    "LOCHA_LEIN",
+    "ARLES"
 ]
 
 

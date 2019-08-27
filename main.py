@@ -41,7 +41,17 @@ ignore_key_list = [
     "GLYWYSING",
     "MORGANNWG",
     "LOCHA_LEIN",
-    "ARLES"
+    "ARLES",
+    "COUNTY_GELRE",
+    "DUCHY_HOLLAND",
+    "COUNTY_KLEVE",
+    "COUNTY_HOLLAND",
+    "COUNTY_WESTFRIESLAND",
+    "COUNTY_GELRE",
+    "COUNTY_BREDA",
+    "DUCHY_CHAMAVIA",
+    "DUCHY_HOLLAND",
+    "DUCHY_GELRE"
 ]
 
 

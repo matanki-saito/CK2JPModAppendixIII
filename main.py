@@ -51,7 +51,8 @@ ignore_key_list = [
     "COUNTY_BREDA",
     "DUCHY_CHAMAVIA",
     "DUCHY_HOLLAND",
-    "DUCHY_GELRE"
+    "DUCHY_GELRE",
+    "WEST_FRISIA"
 ]
 
 

@@ -52,7 +52,8 @@ ignore_key_list = [
     "DUCHY_CHAMAVIA",
     "DUCHY_HOLLAND",
     "DUCHY_GELRE",
-    "WEST_FRISIA"
+    "WEST_FRISIA",
+    "TOXANDRIA"
 ]
 
 
